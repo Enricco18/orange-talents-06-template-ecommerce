@@ -15,6 +15,7 @@ public class User {
 
     @NotNull @NotBlank @NotEmpty
     @Email
+    @Column(unique = true)
     private String login;
 
     @NotNull @NotBlank @NotEmpty
