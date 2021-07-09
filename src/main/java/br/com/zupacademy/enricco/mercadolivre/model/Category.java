@@ -15,7 +15,7 @@ public class Category {
     @Column(unique = true)
     private String name;
 
-    @OneToOne
+    @ManyToOne
     private Category parent_category;
 
     @Deprecated

@@ -1,7 +1,6 @@
 package br.com.zupacademy.enricco.mercadolivre.model;
 
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -26,8 +25,24 @@ public class User {
     @CreationTimestamp
     private LocalDateTime created_at;
 
+    @Deprecated
+    private User() {
+    }
+
     public User(@NotBlank @Email String login, @NotBlank String hashed_password) {
         this.login = login;
         this.hashed_password = hashed_password;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public String getHashed_password() {
+        return hashed_password;
     }
 }
