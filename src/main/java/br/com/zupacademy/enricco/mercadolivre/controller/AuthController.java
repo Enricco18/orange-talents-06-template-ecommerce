@@ -2,6 +2,7 @@ package br.com.zupacademy.enricco.mercadolivre.controller;
 
 import br.com.zupacademy.enricco.mercadolivre.config.security.TokenManager;
 import br.com.zupacademy.enricco.mercadolivre.controller.request.LoginRequest;
+import br.com.zupacademy.enricco.mercadolivre.controller.response.TokenDTO;
 import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -26,13 +27,14 @@ public class AuthController {
     private TokenManager tokenManager;
 
     @PostMapping
-    public ResponseEntity<String> authenticate(@RequestBody @Valid LoginRequest loginRequest){
+    public ResponseEntity<TokenDTO> authenticate(@RequestBody @Valid LoginRequest loginRequest){
         UsernamePasswordAuthenticationToken userToken = new UsernamePasswordAuthenticationToken(loginRequest.getLogin(),loginRequest.getPassword());
 
         try {
             Authentication auth = authenticationManager.authenticate(userToken);
             String token = tokenManager.generateToken(auth);
-            return ResponseEntity.ok(token);
+            TokenDTO tokenDTO = new TokenDTO(token);
+            return ResponseEntity.ok(tokenDTO);
 
         }catch (AuthenticationException e){
             return ResponseEntity.badRequest().build();
