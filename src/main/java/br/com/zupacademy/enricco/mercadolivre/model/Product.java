@@ -2,6 +2,7 @@ package br.com.zupacademy.enricco.mercadolivre.model;
 
 import br.com.zupacademy.enricco.mercadolivre.config.security.LoggedUser;
 import br.com.zupacademy.enricco.mercadolivre.controller.request.NewCharacteristic;
+import br.com.zupacademy.enricco.mercadolivre.controller.request.NewOpinionRequest;
 import br.com.zupacademy.enricco.mercadolivre.controller.request.ProductImageRequest;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.validator.constraints.Length;
@@ -48,6 +49,8 @@ public class Product {
     Set<Characteristic> characteristics = new HashSet<>();
     @OneToMany(mappedBy = "product", cascade = CascadeType.MERGE)
     Set<Image> images = new HashSet<>();
+    @OneToMany(mappedBy = "product", cascade = CascadeType.MERGE)
+    Set<Opinion> opinions = new HashSet<>();
 
     @CreationTimestamp
     private LocalDateTime created_at;
@@ -84,7 +87,7 @@ public class Product {
         return characteristics;
     }
 
-    public boolean hasEditPermission(LoggedUser userDetails) {
+    public boolean hasOwnership(LoggedUser userDetails) {
         return userDetails.getId() == this.owner.getId();
     }
 
@@ -97,5 +100,10 @@ public class Product {
 
         this.images.addAll(newImages);
 
+    }
+
+    public void addOpinion(NewOpinionRequest opinionRequest, User user) {
+        Opinion opinion = opinionRequest.toModel(this, user);
+        this.opinions.add(opinion);
     }
 }

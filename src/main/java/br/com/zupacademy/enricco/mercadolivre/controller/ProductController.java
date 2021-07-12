@@ -20,7 +20,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
-import java.util.List;
 import java.util.Set;
 
 @RestController
@@ -66,7 +65,11 @@ public class ProductController {
 
         Product product = entityManager.find(Product.class,product_id);
 
-        if(!product.hasEditPermission(userDetails)){
+        if(product==null){
+            return ResponseEntity.notFound().build();
+        }
+
+        if(!product.hasOwnership(userDetails)){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
