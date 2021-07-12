@@ -1,6 +1,8 @@
 package br.com.zupacademy.enricco.mercadolivre.model;
 
+import br.com.zupacademy.enricco.mercadolivre.config.security.LoggedUser;
 import br.com.zupacademy.enricco.mercadolivre.controller.request.NewCharacteristic;
+import br.com.zupacademy.enricco.mercadolivre.controller.request.ProductImageRequest;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.util.Assert;
@@ -44,9 +46,15 @@ public class Product {
     private User owner;
     @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE)
     Set<Characteristic> characteristics = new HashSet<>();
+    @OneToMany(mappedBy = "product", cascade = CascadeType.MERGE)
+    Set<Image> images = new HashSet<>();
 
     @CreationTimestamp
     private LocalDateTime created_at;
+
+    @Deprecated
+    private Product() {
+    }
 
     public Product(@NotBlank String name,
                    @NotNull @Positive Integer qtd,
@@ -75,4 +83,12 @@ public class Product {
     public Set<Characteristic> getCharacteristics() {
         return characteristics;
     }
+
+    public boolean hasEditPermission(LoggedUser userDetails) {
+        return userDetails.getId() == this.owner.getId();
+    }
+
+//    public void addImage(ProductImageRequest request) {
+//        request.
+//    }
 }
