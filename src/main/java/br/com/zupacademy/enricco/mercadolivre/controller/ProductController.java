@@ -20,6 +20,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
+import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/product")
@@ -55,8 +57,8 @@ public class ProductController {
 
     @PostMapping("/{id}/images")
     @Transactional
-    public ResponseEntity<?> addfoto(@PathVariable("id") Long product_id, @Valid ProductImageRequest request,Authentication authentication){
-        logger.info("METHOD: POST | PATH: /product/id/imagens | FUNCTION: addfoto | BODY: " + request.toString());
+    public ResponseEntity<?> addImage(@PathVariable("id") Long product_id, @Valid ProductImageRequest request,Authentication authentication){
+        logger.info("METHOD: POST | PATH: /product/id/images | FUNCTION: addImage | BODY: " + request.toString());
 
         Assert.isInstanceOf(LoggedUser.class,authentication.getPrincipal(),"Não é do tipo LoggedUser");
         LoggedUser userDetails = (LoggedUser) authentication.getPrincipal();
@@ -68,10 +70,10 @@ public class ProductController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
-        uploader.send(request);
-        //product.addImage(request);
+        Set<String> urlList = uploader.send(request);
+        product.addImage(urlList);
 
-        //entityManager.merge(product);
+        entityManager.merge(product);
 
         return ResponseEntity.ok().build();
 

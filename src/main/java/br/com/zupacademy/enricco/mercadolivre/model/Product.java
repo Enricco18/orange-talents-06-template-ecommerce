@@ -88,7 +88,14 @@ public class Product {
         return userDetails.getId() == this.owner.getId();
     }
 
-//    public void addImage(ProductImageRequest request) {
-//        request.
-//    }
+    public void addImage(Set<String> urlList) {
+        Set<Image> newImages = new HashSet<>();
+
+        urlList.stream().forEach(url ->{
+            newImages.add(new Image(url,this));
+        });
+
+        this.images.addAll(newImages);
+
+    }
 }

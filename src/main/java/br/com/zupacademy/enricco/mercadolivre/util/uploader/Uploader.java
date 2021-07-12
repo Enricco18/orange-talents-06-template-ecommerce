@@ -3,8 +3,8 @@ package br.com.zupacademy.enricco.mercadolivre.util.uploader;
 
 import br.com.zupacademy.enricco.mercadolivre.controller.request.ProductImageRequest;
 
-import java.util.List;
+import java.util.Set;
 
 public interface Uploader {
-    public List<String> send(ProductImageRequest productImageRequests);
+    public Set<String> send(ProductImageRequest productImageRequests);
 }

@@ -12,12 +12,16 @@ public class Image {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @URL
     @NotNull
+    @URL
     private String url;
 
     @ManyToOne
     private Product product;
+
+    @Deprecated
+    private Image() {
+    }
 
     public Image(@URL @NotBlank String url, @NotNull Product product) {
         this.url = url;
