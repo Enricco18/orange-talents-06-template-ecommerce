@@ -3,10 +3,13 @@ package br.com.zupacademy.enricco.mercadolivre.model;
 import br.com.zupacademy.enricco.mercadolivre.config.security.LoggedUser;
 import br.com.zupacademy.enricco.mercadolivre.controller.request.NewCharacteristic;
 import br.com.zupacademy.enricco.mercadolivre.controller.request.NewOpinionRequest;
+import br.com.zupacademy.enricco.mercadolivre.controller.request.NewQuestionRequest;
 import br.com.zupacademy.enricco.mercadolivre.controller.request.ProductImageRequest;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.http.HttpStatus;
 import org.springframework.util.Assert;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.persistence.*;
 import javax.validation.Valid;
@@ -46,11 +49,13 @@ public class Product {
     @ManyToOne
     private User owner;
     @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE)
-    Set<Characteristic> characteristics = new HashSet<>();
+    private Set<Characteristic> characteristics = new HashSet<>();
     @OneToMany(mappedBy = "product", cascade = CascadeType.MERGE)
-    Set<Image> images = new HashSet<>();
+    private Set<Image> images = new HashSet<>();
     @OneToMany(mappedBy = "product", cascade = CascadeType.MERGE)
-    Set<Opinion> opinions = new HashSet<>();
+    private Set<Opinion> opinions = new HashSet<>();
+    @OneToMany(mappedBy = "product", cascade = CascadeType.MERGE)
+    private Set<Question> questions = new HashSet<>();
 
     @CreationTimestamp
     private LocalDateTime created_at;
@@ -83,6 +88,28 @@ public class Product {
         Assert.isTrue(this.characteristics.size()>=3, "Tem que ter no mínimo 3 características");
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public User getOwner() {
+        return owner;
+    }
+
+    public Set<Question> getQuestions() {
+        return questions;
+    }
+
+    public static Product getOrThrow404(EntityManager entityManager, Long product_id) {
+        Product product = entityManager.find(Product.class,product_id);
+
+        if(product==null){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+
+        return product;
+    }
+
     public Set<Characteristic> getCharacteristics() {
         return characteristics;
     }
@@ -105,5 +132,10 @@ public class Product {
     public void addOpinion(NewOpinionRequest opinionRequest, User user) {
         Opinion opinion = opinionRequest.toModel(this, user);
         this.opinions.add(opinion);
+    }
+
+    public void addQuestion(NewQuestionRequest request, User user){
+        Question question = request.toModel(this,user);
+        this.questions.add(question);
     }
 }

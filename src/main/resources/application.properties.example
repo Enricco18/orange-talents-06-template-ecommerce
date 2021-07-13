@@ -1,0 +1,14 @@
+spring.jpa.hibernate.ddl-auto=
+spring.datasource.url=
+spring.datasource.username=
+spring.datasource.password=
+
+json.exp=
+
+
+#####Email configuration########
+mail.principal=
+spring.mail.host=
+spring.mail.port=
+spring.mail.username=
+spring.mail.password=
