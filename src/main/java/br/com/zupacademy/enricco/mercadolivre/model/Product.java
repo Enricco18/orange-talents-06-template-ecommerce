@@ -19,6 +19,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -53,9 +54,9 @@ public class Product {
     @OneToMany(mappedBy = "product", cascade = CascadeType.MERGE)
     private Set<Image> images = new HashSet<>();
     @OneToMany(mappedBy = "product", cascade = CascadeType.MERGE)
-    private Set<Opinion> opinions = new HashSet<>();
+    private List<Opinion> opinions = new ArrayList<>();
     @OneToMany(mappedBy = "product", cascade = CascadeType.MERGE)
-    private Set<Question> questions = new HashSet<>();
+    private List<Question> questions = new ArrayList<>();
 
     @CreationTimestamp
     private LocalDateTime created_at;
@@ -92,11 +93,35 @@ public class Product {
         return name;
     }
 
+    public Integer getQtd() {
+        return qtd;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public Set<Image> getImages() {
+        return images;
+    }
+
+    public List<Opinion> getOpinions() {
+        return opinions;
+    }
+
     public User getOwner() {
         return owner;
     }
 
-    public Set<Question> getQuestions() {
+    public List<Question> getQuestions() {
         return questions;
     }
 
@@ -137,5 +162,13 @@ public class Product {
     public void addQuestion(NewQuestionRequest request, User user){
         Question question = request.toModel(this,user);
         this.questions.add(question);
+    }
+
+    public String getCategoryName() {
+        return this.category.getName();
+    }
+
+    public String getVendorName() {
+        return this.owner.getLogin();
     }
 }

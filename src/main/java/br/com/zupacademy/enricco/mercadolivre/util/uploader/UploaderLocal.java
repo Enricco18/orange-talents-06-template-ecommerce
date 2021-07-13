@@ -25,7 +25,7 @@ public class UploaderLocal implements Uploader{
 //
 //    private String baseURL = "localhost:"+serverProperties.getPort();
 
-    private String baseURL = "http://www.localhost:8080";
+    private String baseURL = "http://localhost:8080";
     private String imageURL = "./src/main/resources/static/images/";
 
 

@@ -41,4 +41,8 @@ public class Image {
     public int hashCode() {
         return Objects.hash(url, product);
     }
+
+    public String getURL() {
+        return this.url;
+    }
 }

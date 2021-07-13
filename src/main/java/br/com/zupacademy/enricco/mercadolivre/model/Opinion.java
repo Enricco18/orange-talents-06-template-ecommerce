@@ -56,4 +56,20 @@ public class Opinion {
     public int hashCode() {
         return Objects.hash(stars, title, description, user, product);
     }
+
+    public Short getStars() {
+        return stars;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getUser() {
+        return user.getLogin();
+    }
 }

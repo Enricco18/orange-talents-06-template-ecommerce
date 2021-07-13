@@ -35,4 +35,12 @@ public class Question {
         this.user_asking = user_asking;
         this.product = product;
     }
+
+    public String getTitle() {
+        return this.title;
+    }
+
+    public String getUser_asking() {
+        return user_asking.getLogin();
+    }
 }

@@ -3,6 +3,7 @@ package br.com.zupacademy.enricco.mercadolivre.controller;
 import br.com.zupacademy.enricco.mercadolivre.config.security.LoggedUser;
 import br.com.zupacademy.enricco.mercadolivre.controller.request.NewProductRequest;
 import br.com.zupacademy.enricco.mercadolivre.controller.request.ProductImageRequest;
+import br.com.zupacademy.enricco.mercadolivre.controller.response.ProductDTO;
 import br.com.zupacademy.enricco.mercadolivre.model.Product;
 import br.com.zupacademy.enricco.mercadolivre.util.uploader.Uploader;
 import br.com.zupacademy.enricco.mercadolivre.validation.UniqueCategoryName;
@@ -30,10 +31,7 @@ public class ProductController {
 
     private Logger logger = LoggerFactory.getLogger(ProductController.class);
 
-    @Autowired
-    private Uploader uploader;
-
-    @InitBinder(value = "NewProductRequest")
+    @InitBinder(value = "newProductRequest")
     public void init(WebDataBinder binder){
         binder.addValidators(new UniqueCategoryName());
     }
@@ -54,31 +52,13 @@ public class ProductController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/{id}/images")
-    @Transactional
-    public ResponseEntity<?> addImage(@PathVariable("id") Long product_id, @Valid ProductImageRequest request,Authentication authentication){
-        logger.info("METHOD: POST | PATH: /product/id/images | FUNCTION: addImage | BODY: " + request.toString());
+    @GetMapping("/{id}")
+    public ResponseEntity<ProductDTO> getProductDetails(@PathVariable("id") Long product_id){
+        Product product = Product.getOrThrow404(entityManager,product_id);
 
-        Assert.isInstanceOf(LoggedUser.class,authentication.getPrincipal(),"Não é do tipo LoggedUser");
-        LoggedUser userDetails = (LoggedUser) authentication.getPrincipal();
-        Assert.notNull(userDetails,"Não pode não ter usuário logado!");
+        ProductDTO productDTO = new ProductDTO(product);
 
-        Product product = entityManager.find(Product.class,product_id);
-
-        if(product==null){
-            return ResponseEntity.notFound().build();
-        }
-
-        if(!product.hasOwnership(userDetails)){
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-        }
-
-        Set<String> urlList = uploader.send(request);
-        product.addImage(urlList);
-
-        entityManager.merge(product);
-
-        return ResponseEntity.ok().build();
-
+        return ResponseEntity.ok(productDTO);
     }
+
 }

@@ -26,4 +26,8 @@ public class Category {
         this.name = name;
         this.parent_category = parent_category;
     }
+
+    public String getName() {
+        return this.name;
+    }
 }

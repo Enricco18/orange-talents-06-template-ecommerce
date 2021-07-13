@@ -21,9 +21,21 @@ public class Characteristic {
     @ManyToOne
     private Product product;
 
+    @Deprecated
+    private Characteristic() {
+    }
+
     public Characteristic(String name, String description, Product product) {
         this.name = name;
         this.description = description;
         this.product = product;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
     }
 }
