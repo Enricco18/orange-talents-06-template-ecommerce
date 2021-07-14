@@ -45,6 +45,24 @@ public class ProductTests {
 
     }
 
+    @DisplayName("Teste irá reduzir")
+    @ParameterizedTest
+    @MethodSource("generatorForTest2")
+    public void testReduceQuantity3(Collection<NewCharacteristic> characteristicsList){
+        Category category = new Category("Artigos esportivos",null);
+        User user = new User("mjbetterthanlebron@email.com",new BCryptPasswordEncoder().encode("1234"));
+
+        Product product = new Product("Taco de golfe",1,"Metálico", BigDecimal.valueOf(1000),category,user,characteristicsList.stream().collect(Collectors.toList()));
+        boolean mustBeFalse = product.reduceStock(2);
+        boolean mustBeTrue1 = product.reduceStock(1);
+        boolean mustBeFalse1 = product.reduceStock(0);
+        Assert.isTrue(mustBeTrue1,"Pode reduzir e chegar a 0");
+        Assert.isTrue(!mustBeFalse,"Não pode reduzir mais q o limite");
+        Assert.isTrue(!mustBeFalse1,"Não reduzir 0");
+        Assert.isTrue(product.getQtd()==0,"Só vai reduzir 1");
+       // Assertions.assertThrows(IllegalArgumentException.class,()->product.reduceStock(0),"Não pode reduzir 0");
+    }
+
     //Test Generators
     public static Stream<Arguments> generatorForTest1(){
         return Stream.of(

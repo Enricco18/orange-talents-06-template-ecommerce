@@ -35,8 +35,11 @@ public class MailTrapSender implements MailSender{
         MimeMessageHelper message ;
 
         switch (type){
+            case ORDER_NOTIFICATION:
+                message = buildEmail("order-notification.flth",parameter);
+                break;
             case QUESTION:
-                message = buildQuestionEmail(parameter);
+                message = buildEmail("question-template.flth",parameter);
                 break;
             default:
                 message = null;
@@ -45,7 +48,7 @@ public class MailTrapSender implements MailSender{
         getJavaMailSender().send(message.getMimeMessage());
     }
 
-    private MimeMessageHelper buildQuestionEmail(EmailParameters parameter){
+    private MimeMessageHelper buildEmail(String url,EmailParameters parameter){
         MimeMessage message = javaMailSender.createMimeMessage();
         MimeMessageHelper helper;
         try {
@@ -54,7 +57,7 @@ public class MailTrapSender implements MailSender{
             helper.setFrom(parameter.getFrom());
             helper.setTo(parameter.getTo());
 
-            String mail = parameter.getContentFromTemplate("question-template.flth",parameter.getModel());
+            String mail = parameter.getContentFromTemplate(url,parameter.getModel());
             helper.setText(mail, true);
 
         }catch (Exception e){

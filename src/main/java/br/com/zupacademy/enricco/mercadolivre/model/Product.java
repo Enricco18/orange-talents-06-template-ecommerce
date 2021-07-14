@@ -13,10 +13,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import javax.persistence.*;
 import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
+import javax.validation.constraints.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -170,5 +167,14 @@ public class Product {
 
     public String getVendorName() {
         return this.owner.getLogin();
+    }
+
+    public boolean reduceStock(@Min(1) @Positive Integer quantity) {
+
+        if(this.qtd-quantity>=0 && quantity>0){
+            this.qtd -= quantity;
+            return true;
+        }
+        return false;
     }
 }
