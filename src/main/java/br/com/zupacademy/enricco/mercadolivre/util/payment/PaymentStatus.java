@@ -1,6 +1,7 @@
 package br.com.zupacademy.enricco.mercadolivre.util.payment;
 
-public enum OrderStatus {
-    STARTED,
-    COMPLETED;
+public enum PaymentStatus {
+    ERRO,
+    SUCESSO
+
 }

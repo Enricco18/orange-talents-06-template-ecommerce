@@ -32,19 +32,7 @@ public class MailTrapSender implements MailSender{
 
     @Override
     public void sendEmail(EmailType type, EmailParameters parameter ) {
-        MimeMessageHelper message ;
-
-        switch (type){
-            case ORDER_NOTIFICATION:
-                message = buildEmail("order-notification.flth",parameter);
-                break;
-            case QUESTION:
-                message = buildEmail("question-template.flth",parameter);
-                break;
-            default:
-                message = null;
-        }
-
+        MimeMessageHelper message = buildEmail(type.getTemplate(),parameter) ;
         getJavaMailSender().send(message.getMimeMessage());
     }
 

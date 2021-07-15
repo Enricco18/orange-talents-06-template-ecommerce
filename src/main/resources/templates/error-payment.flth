@@ -1,0 +1,17 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
+<head>
+    <title>Email do MercadoLivre! Sempre pensando em você s2</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+</head>
+<body>
+<p>Infelizmente ,seu pagamento deu errado :/</p>
+<p>Clique no link para tentar novamente: ${url}</p>
+<br>
+<p>Tente novamente!</p>
+<footer>
+    <h3> Mercado livre agradece a preferência!</h3>
+</footer>
+</body>
+</html>

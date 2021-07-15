@@ -169,6 +169,10 @@ public class Product {
         return this.owner.getLogin();
     }
 
+    public Long getId() {
+        return id;
+    }
+
     public boolean reduceStock(@Min(1) @Positive Integer quantity) {
 
         if(this.qtd-quantity>=0 && quantity>0){
@@ -176,5 +180,9 @@ public class Product {
             return true;
         }
         return false;
+    }
+
+    public Long getVendorId() {
+        return this.owner.getId();
     }
 }
