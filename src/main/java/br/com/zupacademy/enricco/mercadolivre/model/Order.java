@@ -129,7 +129,7 @@ public class Order {
     }
 
     public String getOpinionURL(UriComponentsBuilder uriComponentsBuilder) {
-        return uriComponentsBuilder.path("/opinion/{id}").buildAndExpand("is",this.product.getId()).toString();
+        return uriComponentsBuilder.path("/opinion/{id}").buildAndExpand(this.product.getId().toString()).toString();
     }
 
     public Long getBuyer_Id() {
